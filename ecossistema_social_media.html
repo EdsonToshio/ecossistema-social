@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mapa do Ecossistema (Social Media) — Método em 5 Passos + PESO</title>
+  <style>
+    :root{
+      --bg:#0b0f1a;
+      --panel:#111830;
+      --panel2:#0f1428;
+      --text:#e9ecf5;
+      --muted:#b6bdd6;
+      --soft:#92a0c6;
+      --accent:#7c5cff;
+      --accent2:#28d6c5;
+      --warn:#ffcc66;
+      --danger:#ff6b6b;
+      --ok:#5ee38b;
+      --border: rgba(255,255,255,.10);
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius: 16px;
+      --radius2: 12px;
+      --max: 1080px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background:
+        radial-gradient(1100px 700px at 15% 10%, rgba(124,92,255,.28), transparent 55%),
+        radial-gradient(900px 600px at 85% 15%, rgba(40,214,197,.22), transparent 60%),
+        radial-gradient(1000px 800px at 40% 100%, rgba(255,204,102,.10), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.35;
+    }
+
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:28px 18px 64px}
+    header.hero{
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    header.hero:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:linear-gradient(120deg, rgba(124,92,255,.35), rgba(40,214,197,.25), rgba(255,204,102,.15));
+      filter: blur(26px);
+      opacity:.45;
+      z-index:0;
+    }
+    .hero .inner{position:relative; z-index:1; padding:22px 20px}
+    .kicker{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      color:var(--muted);
+      font-size:13px;
+      letter-spacing:.2px;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    h1{
+      margin:10px 0 8px;
+      font-size: clamp(24px, 4vw, 38px);
+      line-height:1.05;
+      letter-spacing:-.6px;
+    }
+    .sub{
+      color:var(--muted);
+      font-size: clamp(14px, 2vw, 16px);
+      margin:0 0 14px;
+      max-width: 72ch;
+    }
+    .ctaRow{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin-top:12px;
+    }
+    .btn{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      display:inline-flex; gap:10px; align-items:center;
+      font-weight:600;
+      transition:.15s transform, .15s background, .15s border-color;
+      user-select:none;
+      text-decoration:none;
+    }
+    .btn:hover{transform:translateY(-1px); background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.16)}
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(40,214,197,.75));
+      border-color: rgba(255,255,255,.18);
+      color:#070a14;
+    }
+    .btn.primary:hover{background: linear-gradient(135deg, rgba(124,92,255,1), rgba(40,214,197,.86))}
+    .btn .ic{width:18px; height:18px; display:inline-block}
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+      margin-top:16px;
+    }
+    @media (max-width: 940px){
+      .grid{grid-template-columns: 1fr}
+    }
+
+    .card{
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background: rgba(255,255,255,.03);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 16px;
+      border-bottom:1px solid var(--border);
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+    }
+    .card .hd h2{
+      font-size:16px;
+      margin:0;
+      letter-spacing:-.2px;
+      display:flex; gap:10px; align-items:center;
+    }
+    .card .bd{padding:14px 16px}
+    .muted{color:var(--muted)}
+    .small{font-size:13px}
+    .mono{font-family:var(--mono)}
+    .tag{
+      font-size:12px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      color:var(--muted);
+      background:rgba(255,255,255,.02);
+      white-space:nowrap;
+    }
+    .tabs{
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .tab{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.02);
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:12px;
+      transition:.15s background, .15s color, .15s border-color;
+      user-select:none;
+    }
+    .tab[aria-selected="true"]{
+      background:rgba(124,92,255,.22);
+      color:var(--text);
+      border-color:rgba(124,92,255,.35);
+    }
+    .panel{display:none}
+    .panel.active{display:block}
+
+    .steps{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+    }
+    .step{
+      border:1px solid var(--border);
+      border-radius:var(--radius2);
+      background:rgba(0,0,0,.12);
+      padding:12px 12px 10px;
+      position:relative;
+    }
+    .step .top{
+      display:flex; gap:10px; align-items:flex-start; justify-content:space-between;
+      margin-bottom:8px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center; gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:12px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.02);
+    }
+    .badge b{color:var(--text)}
+    .badge .n{
+      width:20px; height:20px;
+      border-radius:6px;
+      display:inline-grid; place-items:center;
+      background:rgba(124,92,255,.25);
+      border:1px solid rgba(124,92,255,.35);
+      font-family:var(--mono);
+      font-weight:900;
+    }
+    .step h3{
+      margin:0 0 6px;
+      font-size:15px;
+      letter-spacing:-.2px;
+    }
+    .cols{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width: 740px){
+      .cols{grid-template-columns: 1fr}
+    }
+    .box{
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius:14px;
+      padding:10px 10px;
+      background:rgba(255,255,255,.02);
+    }
+    .box .ttl{
+      font-weight:800; font-size:12px; color:var(--muted);
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:8px;
+    }
+    .checklist{
+      display:grid;
+      gap:8px;
+    }
+    label.chk{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:10px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.02);
+      cursor:pointer;
+    }
+    label.chk:hover{background:rgba(255,255,255,.03)}
+    .chk input{margin-top:3px}
+    .chk .t{font-weight:800; font-size:13px}
+    .chk .d{color:var(--muted); font-size:12px; margin-top:2px}
+    .hint{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .callout{
+      border:1px solid rgba(40,214,197,.25);
+      background: rgba(40,214,197,.07);
+      padding:12px;
+      border-radius:14px;
+      color:var(--text);
+    }
+    .callout strong{color:#d9fffb}
+    .callout .mini{color:var(--muted); font-size:12px; margin-top:6px}
+    .riskGrid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:10px;
+      margin-top:8px;
+    }
+    @media (max-width: 740px){.riskGrid{grid-template-columns:1fr}}
+    .risk{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:10px;
+      background:rgba(255,255,255,.02);
+    }
+    .risk .rk{font-weight:900; font-size:13px; margin-bottom:4px}
+    .risk .ex{color:var(--muted); font-size:12px}
+    .formula{
+      border:1px solid rgba(124,92,255,.25);
+      background: rgba(124,92,255,.08);
+      border-radius:14px;
+      padding:12px;
+      margin-top:10px;
+    }
+    .formula .mono{font-weight:900}
+    textarea, input[type="text"]{
+      width:100%;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.18);
+      color:var(--text);
+      padding:10px 10px;
+      font:inherit;
+      outline:none;
+    }
+    textarea{min-height:88px; resize:vertical}
+    .row{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .miniBtn{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      padding:8px 10px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:800;
+      font-size:12px;
+    }
+    .miniBtn:hover{background:rgba(255,255,255,.05)}
+    .divider{height:1px; background:var(--border); margin:14px 0}
+    footer{
+      margin-top:16px;
+      color:var(--muted);
+      font-size:12px;
+      text-align:center;
+    }
+
+    /* Print / PDF */
+    @media print{
+      body{background:#fff; color:#111}
+      header.hero, .card{box-shadow:none}
+      .btn, .tab, .miniBtn{display:none !important}
+      .wrap{max-width:none; padding:0}
+      .card, header.hero{border:1px solid #ddd}
+      .card .bd, .hero .inner{padding:14px}
+      .muted{color:#333}
+      .tag{border-color:#ddd; color:#333}
+      label.chk{border-color:#ddd}
+      textarea, input[type="text"]{border-color:#ddd; color:#111; background:#fff}
+      .formula{border-color:#ddd; background:#f7f5ff}
+      .callout{border-color:#ddd; background:#f1fffd}
+      .risk{border-color:#ddd}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero" id="topo">
+      <div class="inner">
+        <div class="kicker">
+          <span class="pill">Material de aula • Social Media</span>
+          <span class="pill">Método rápido (10–15 min)</span>
+          <span class="pill">Sem depender de plataforma</span>
+        </div>
+        <h1>Mapa do Ecossistema<br/>em Mídias Sociais (Marketing)</h1>
+        <p class="sub">
+          Um guia prático para mapear qualquer caso (marca, ONG, criador) com clareza:
+          <b>caminho</b> → <b>players</b> → <b>mecanismos</b> → <b>risco</b> → <b>insight</b>,
+          e fechar com <b>PESO</b> como checklist.
+        </p>
+
+        <div class="ctaRow">
+          <button class="btn primary" id="btnPrint" title="Exportar como PDF (via impressão do navegador)">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 8V4h10v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M7 17h10v3H7v-3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M6 17H5a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M17 12h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            Exportar / Imprimir (PDF)
+          </button>
+
+          <a class="btn" href="#atividade">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M9 6h11M9 12h11M9 18h11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            Ir para atividade
+          </a>
+
+          <span class="tag">Dica: use “Imprimir” → “Salvar como PDF”</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <div class="hd">
+          <h2>
+            <span class="tag">Abas</span>
+            Mapa rápido + PESO
+          </h2>
+          <div class="tabs" role="tablist" aria-label="Seções">
+            <button class="tab" role="tab" aria-selected="true" aria-controls="p0" id="t0">Método</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="p1" id="t1">PESO</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="p2" id="t2">Riscos</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="p3" id="t3">Insight</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="p4" id="t4">Atividade</button>
+          </div>
+        </div>
+
+        <div class="bd">
+          <!-- Panel 0 -->
+          <div class="panel active" id="p0" role="tabpanel" aria-labelledby="t0">
+            <div class="callout">
+              <strong>Definição prática:</strong> Ecossistema = <b>atores + relações + fluxos</b> (atenção → confiança → ação).
+              <div class="mini">Seu mapa não é uma lista de plataformas. É o caminho que leva o público da descoberta até a ação.</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="steps">
+              <div class="step">
+                <div class="top">
+                  <div class="badge"><span class="n">0</span> <b>Objetivo</b></div>
+                  <span class="tag">30s</span>
+                </div>
+                <h3>Escolha 1 objetivo principal</h3>
+                <div class="cols">
+                  <div class="box">
+                    <div class="ttl">Opções (escolha 1)</div>
+                    <div class="checklist">
+                      <label class="chk"><input type="radio" name="obj" />
+                        <div><div class="t">Marca</div><div class="d">memória, percepção, reputação</div></div>
+                      </label>
+                      <label class="chk"><input type="radio" name="obj" />
+                        <div><div class="t">Comunidade</div><div class="d">conversa, pertencimento, recorrência</div></div>
+                      </label>
+                      <label class="chk"><input type="radio" name="obj" />
+                        <div><div class="t">Tráfego</div><div class="d">clique com intenção, próximos passos</div></div>
+                      </label>
+                      <label class="chk"><input type="radio" name="obj" />
+                        <div><div class="t">Vendas</div><div class="d">confiança + conversão</div></div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="box">
+                    <div class="ttl">Escreva em 1 frase</div>
+                    <input type="text" placeholder="Ex.: Aumentar visitas presenciais e pedidos no delivery" />
+                    <p class="hint">Sem objetivo, o mapa vira “nuvem de coisas” e ninguém sabe o que priorizar.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="step">
+                <div class="top">
+                  <div class="badge"><span class="n">1</span> <b>Caminho</b></div>
+                  <span class="tag">2 min</span>
+                </div>
+                <h3>Desenhe o fluxo do público (3 caixas)</h3>
+                <div class="cols">
+                  <div class="box">
+                    <div class="ttl">Descoberta → Confiança → Ação</div>
+                    <div class="checklist">
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Descoberta</div><div class="d">Como a pessoa chega até você?</div></div>
+                      </label>
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Confiança</div><div class="d">O que faz ela acreditar?</div></div>
+                      </label>
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Ação</div><div class="d">Qual é o próximo passo desejado?</div></div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="box">
+                    <div class="ttl">Preencha rápido</div>
+                    <textarea placeholder="Descoberta: ...&#10;Confiança: ...&#10;Ação: ..."></textarea>
+                    <p class="hint">Se você entende esse caminho, você já entende o ecossistema — sem depender de plataforma.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="step">
+                <div class="top">
+                  <div class="badge"><span class="n">2</span> <b>Players</b></div>
+                  <span class="tag">3 min</span>
+                </div>
+                <h3>Liste só quem influencia o caminho</h3>
+                <div class="cols">
+                  <div class="box">
+                    <div class="ttl">Checklist de players</div>
+                    <div class="checklist">
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Plataformas</div><div class="d">onde distribui/descobre</div></div>
+                      </label>
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Público</div><div class="d">quem decide e reage</div></div>
+                      </label>
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Marca / Cliente</div><div class="d">o que oferece e promete</div></div>
+                      </label>
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Criadores / Influenciadores</div><div class="d">parcerias, mídia, colabs</div></div>
+                      </label>
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Comunidades</div><div class="d">UGC, grupos, tribos</div></div>
+                      </label>
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Parceiros / Canais</div><div class="d">delivery, eventos, imprensa, marketplaces</div></div>
+                      </label>
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Concorrentes (força)</div><div class="d">disputa de atenção</div></div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="box">
+                    <div class="ttl">“O que cada um quer?” (1 frase)</div>
+                    <textarea placeholder="Plataforma quer: ...&#10;Público quer: ...&#10;Marca quer: ..."></textarea>
+                    <p class="hint">Regra: se não mexe em Descoberta/Confiança/Ação, não entra agora.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="step">
+                <div class="top">
+                  <div class="badge"><span class="n">3</span> <b>Mecanismos</b></div>
+                  <span class="tag">3 min</span>
+                </div>
+                <h3>Escolha as engrenagens “visíveis” (sem aula 3)</h3>
+                <div class="cols">
+                  <div class="box">
+                    <div class="ttl">Mecanismos (marque os relevantes)</div>
+                    <div class="checklist">
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Formato</div><div class="d">vídeo, carrossel, stories, live</div></div>
+                      </label>
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Distribuição</div><div class="d">seguidores, compartilhamento, busca</div></div>
+                      </label>
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Prova social</div><div class="d">reviews, comentários, reposts</div></div>
+                      </label>
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Fricção</div><div class="d">o que dificulta a ação (dúvida, link, fila)</div></div>
+                      </label>
+                      <label class="chk"><input type="checkbox" />
+                        <div><div class="t">Recursos</div><div class="d">pago, parcerias, UGC, ferramentas</div></div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="box">
+                    <div class="ttl">Anote 2 mecanismos-chave</div>
+                    <textarea placeholder="Mecanismo 1: ... (por quê?)&#10;Mecanismo 2: ... (por quê?)"></textarea>
+                    <p class="hint">Mecanismo é “o botão que move o jogo”. Não é explicação técnica de algoritmo.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="step">
+                <div class="top">
+                  <div class="badge"><span class="n">4</span> <b>Risco</b></div>
+                  <span class="tag">2 min</span>
+                </div>
+                <h3>Risco = onde o caminho quebra?</h3>
+                <div class="riskGrid">
+                  <div class="risk"><div class="rk">Dependência</div><div class="ex">depender de 1 canal/plataforma só</div></div>
+                  <div class="risk"><div class="rk">Confiança</div><div class="ex">sem prova social / reputação fraca</div></div>
+                  <div class="risk"><div class="rk">Distribuição</div><div class="ex">ninguém descobre / alcance baixo</div></div>
+                  <div class="risk"><div class="rk">Ação</div><div class="ex">gostam, mas não fazem nada (fricção)</div></div>
+                </div>
+                <div class="row">
+                  <input type="text" placeholder="Escreva 1 risco em 1 frase (ex.: dependência do orgânico no Instagram)" />
+                </div>
+              </div>
+
+              <div class="step">
+                <div class="top">
+                  <div class="badge"><span class="n">5</span> <b>Insight</b></div>
+                  <span class="tag">2–3 min</span>
+                </div>
+                <h3>Insight = alavanca que melhora o caminho</h3>
+                <div class="formula">
+                  <div class="mono">Fórmula:</div>
+                  <div><b>Se</b> melhorarmos <span class="mono">X</span> (mecanismo), <b>então</b> melhora <span class="mono">Y</span> (etapa do caminho), <b>porque</b> <span class="mono">Z</span> (o que o público quer).</div>
+                </div>
+                <div class="row">
+                  <textarea placeholder="Se melhorarmos X..., então melhora Y..., porque Z..."></textarea>
+                </div>
+                <p class="hint">Insight não é “achismo bonito”. É uma hipótese lógica + alavanca.</p>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+            <div class="row">
+              <button class="miniBtn" id="btnExpand">Abrir tudo</button>
+              <button class="miniBtn" id="btnCollapse">Fechar tudo</button>
+              <button class="miniBtn" id="btnReset">Limpar marcações</button>
+            </div>
+            <p class="hint">Dica: para aula, você pode projetar esta página e preencher ao vivo com a turma (um caso exemplo).</p>
+          </div>
+
+          <!-- Panel 1 -->
+          <div class="panel" id="p1" role="tabpanel" aria-labelledby="t1">
+            <div class="callout">
+              <strong>PESO</strong> é uma lente complementar para organizar o ecossistema sem se apegar a plataformas.
+              <div class="mini">Use como checklist no final do mapa: “o ecossistema está torto?”</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="cols">
+              <div class="box">
+                <div class="ttl">Paid (Pago)</div>
+                <p class="small muted">Quando você <b>paga</b> para distribuir.</p>
+                <ul class="small">
+                  <li>Anúncios, impulsionamento, publis</li>
+                  <li>Serve para acelerar <b>descoberta</b></li>
+                </ul>
+              </div>
+              <div class="box">
+                <div class="ttl">Owned (Próprio)</div>
+                <p class="small muted">Canais que você <b>controla</b>.</p>
+                <ul class="small">
+                  <li>Site, e-mail, WhatsApp, lista</li>
+                  <li>Reduz dependência de algoritmo</li>
+                </ul>
+              </div>
+              <div class="box">
+                <div class="ttl">Shared (Compartilhado)</div>
+                <p class="small muted">Quando a rede e a comunidade <b>espalham</b>.</p>
+                <ul class="small">
+                  <li>UGC, grupos, compartilhamentos</li>
+                  <li>Amplifica alcance com prova social</li>
+                </ul>
+              </div>
+              <div class="box">
+                <div class="ttl">Earned (Conquistado)</div>
+                <p class="small muted">Menções e credibilidade que você <b>ganha</b>.</p>
+                <ul class="small">
+                  <li>Reviews, recomendações, imprensa</li>
+                  <li>Fortalece confiança</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="formula">
+              <div class="mono">Perguntas rápidas (PESO):</div>
+              <ol class="small">
+                <li><b>Paid:</b> onde eu acelero a descoberta?</li>
+                <li><b>Owned:</b> qual canal eu controlo para não depender só de rede?</li>
+                <li><b>Shared:</b> como a comunidade pode espalhar?</li>
+                <li><b>Earned:</b> qual prova social/review preciso conquistar?</li>
+              </ol>
+            </div>
+
+            <p class="hint">Para a Aula 1: use PESO como “checklist final”, não como plano detalhado de mídia.</p>
+          </div>
+
+          <!-- Panel 2 -->
+          <div class="panel" id="p2" role="tabpanel" aria-labelledby="t2">
+            <div class="callout">
+              <strong>Risco</strong> é simples: “onde o caminho quebra?” (escolha 1).
+              <div class="mini">Você não precisa de SWOT na Aula 1. Basta identificar o ponto fraco do fluxo.</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="riskGrid">
+              <div class="risk">
+                <div class="rk">Dependência</div>
+                <div class="ex">Ex.: só cresce se o orgânico do Instagram entregar.</div>
+              </div>
+              <div class="risk">
+                <div class="rk">Confiança</div>
+                <div class="ex">Ex.: pouca prova social, reviews fracos, crise fácil.</div>
+              </div>
+              <div class="risk">
+                <div class="rk">Distribuição</div>
+                <div class="ex">Ex.: ninguém descobre, alcance baixo, pouca compartilhabilidade.</div>
+              </div>
+              <div class="risk">
+                <div class="rk">Ação</div>
+                <div class="ex">Ex.: gostam, mas não agem (fricção: link, preço, dúvida).</div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+            <textarea placeholder="Escreva o risco em 1 frase. Depois diga qual etapa ele afeta (Descoberta, Confiança ou Ação)."></textarea>
+          </div>
+
+          <!-- Panel 3 -->
+          <div class="panel" id="p3" role="tabpanel" aria-labelledby="t3">
+            <div class="callout">
+              <strong>Insight</strong> é uma alavanca lógica — não “achismo bonito”.
+              <div class="mini">Use a fórmula para transformar ideia em hipótese clara.</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="formula">
+              <div class="mono">Fórmula do Insight</div>
+              <div class="small">
+                <b>Se</b> melhorarmos <span class="mono">X</span> (mecanismo), <b>então</b> melhora <span class="mono">Y</span> (etapa do caminho), <b>porque</b> <span class="mono">Z</span> (o que o público quer).
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="cols">
+              <div class="box">
+                <div class="ttl">Exemplo (cafeteria)</div>
+                <p class="small">
+                  Se melhorarmos <b>reviews + reposts</b> (prova social),
+                  então melhora <b>confiança</b>,
+                  porque o público escolhe por <b>recomendação</b>.
+                </p>
+              </div>
+              <div class="box">
+                <div class="ttl">Escreva o seu</div>
+                <textarea placeholder="Se melhorarmos X..., então melhora Y..., porque Z..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel 4 -->
+          <div class="panel" id="p4" role="tabpanel" aria-labelledby="t4">
+            <div id="atividade" class="callout">
+              <strong>Atividade em grupo (3–5 pessoas)</strong>
+              <div class="mini">Objetivo: aplicar o mapa em um caso simples e compartilhar 1 insight em 30s.</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <ol class="small">
+              <li>Escolham um caso simples (ex.: cafeteria, ONG, criador).</li>
+              <li>Desenhem o caminho: <b>Descoberta → Confiança → Ação</b>.</li>
+              <li>Marquem os <b>players</b> e anotem “o que cada um quer”.</li>
+              <li>Indiquem <b>1 risco</b> (onde o caminho quebra).</li>
+              <li>Entreguem <b>1 insight</b> (use a fórmula).</li>
+              <li>Opcional: chequem com <b>PESO</b> (o ecossistema está torto?).</li>
+            </ol>
+
+            <div class="divider"></div>
+
+            <div class="formula">
+              <div class="mono">Dicas para não travar</div>
+              <ul class="small">
+                <li>Escolha <b>1 objetivo</b> principal.</li>
+                <li>Liste só quem mexe no fluxo (Descoberta/Confiança/Ação).</li>
+                <li>Risco = escolha <b>um</b> ponto de quebra.</li>
+                <li>Insight = alavanca + “por quê”.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="hd">
+          <h2><span class="tag">Cola</span> Como explicar em 60s</h2>
+          <span class="tag mono">script</span>
+        </div>
+        <div class="bd">
+          <p class="small">
+            <b>Ecossistema</b> é o conjunto de relações que faz o resultado acontecer.
+            Eu mapeio assim:
+            <b>Descoberta → Confiança → Ação</b>.
+            Depois eu marco os <b>players</b> e “o que cada um quer”.
+            Depois escolho <b>1 risco</b> (onde quebra).
+            Depois faço <b>1 insight</b> (alavanca com lógica).
+            E fecho com <b>PESO</b> para checar dependências.
+          </p>
+
+          <div class="divider"></div>
+
+          <p class="small muted"><b>Atalho mental</b></p>
+          <p class="small">
+            <span class="mono">Caminho</span> (fluxo) →
+            <span class="mono">Players</span> (quem) →
+            <span class="mono">Mecanismos</span> (como) →
+            <span class="mono">Risco</span> (onde quebra) →
+            <span class="mono">Insight</span> (alavanca) →
+            <span class="mono">PESO</span> (checklist).
+          </p>
+
+          <div class="divider"></div>
+
+          <p class="small muted"><b>Exportar PDF</b></p>
+          <p class="small">
+            Clique em <b>Exportar/Imprimir</b> no topo e escolha
+            <span class="mono">Salvar como PDF</span>.
+          </p>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      Feito para aula • Use, adapte e imprima como PDF quando quiser.
+    </footer>
+  </div>
+
+  <script>
+    // Tabs
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const panels = Array.from(document.querySelectorAll('.panel'));
+
+    function activateTab(idx){
+      tabs.forEach((t,i)=>{
+        const on = i===idx;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      panels.forEach((p,i)=>p.classList.toggle('active', i===idx));
+    }
+
+    tabs.forEach((t,i)=>t.addEventListener('click', ()=>activateTab(i)));
+
+    // Print to PDF
+    document.getElementById('btnPrint').addEventListener('click', ()=>window.print());
+
+    // Expand / collapse: convert steps into <details>-like by toggling boxes visibility
+    const stepBodies = Array.from(document.querySelectorAll('.step .cols, .step .riskGrid, .step .formula, .step .row'));
+    const btnExpand = document.getElementById('btnExpand');
+    const btnCollapse = document.getElementById('btnCollapse');
+    const btnReset = document.getElementById('btnReset');
+
+    function setCompact(compact){
+      document.querySelectorAll('.step').forEach(step=>{
+        step.dataset.compact = compact ? '1':'0';
+        // hide/show inner elements
+        step.querySelectorAll('.cols, .riskGrid, .formula, .row, .hint').forEach(el=>{
+          el.style.display = compact ? 'none' : '';
+        });
+      });
+    }
+
+    btnExpand?.addEventListener('click', ()=>setCompact(false));
+    btnCollapse?.addEventListener('click', ()=>setCompact(true));
+
+    btnReset?.addEventListener('click', ()=>{
+      document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(i=>i.checked=false);
+      document.querySelectorAll('textarea, input[type="text"]').forEach(i=>i.value='');
+      setCompact(false);
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+
+    // Start expanded by default
+    setCompact(false);
+  </script>
+</body>
+</html>
